@@ -248,8 +248,20 @@
           Votre navigateur ne supporte pas l'audio HTML5.
         </audio>
 
-        <button class="btn" id="playBtn">▶ Lancer l’écoute</button>
+        <button class="btn" id="playBtn">▶ Lancer l’écoute du message</button>
         <div class="status" id="status"></div>
+
+        <div style="height: 18px;"></div>
+
+        <p class="audio-title">Écouter sa musique</p>
+
+        <audio id="musicPlayer" controls preload="auto">
+          <source src="musique.mp3" type="audio/mpeg" />
+          Votre navigateur ne supporte pas l'audio HTML5.
+        </audio>
+
+        <button class="btn" id="musicBtn">🎵 Lancer sa musique préférée</button>
+        <div class="status" id="musicStatus"></div>
       </section>
 
       <div class="footer">
@@ -261,21 +273,41 @@
 
   <script>
     const audio = document.getElementById('player');
+    const musicPlayer = document.getElementById('musicPlayer');
     const playBtn = document.getElementById('playBtn');
+    const musicBtn = document.getElementById('musicBtn');
     const status = document.getElementById('status');
+    const musicStatus = document.getElementById('musicStatus');
 
     async function tryPlay() {
       try {
+        if (!musicPlayer.paused) {
+          musicPlayer.pause();
+        }
         await audio.play();
-        status.textContent = 'Lecture en cours…';
+        status.textContent = 'Lecture du message en cours…';
+        musicStatus.textContent = '';
       } catch {
         status.textContent = 'Touchez le bouton pour démarrer l’écoute.';
       }
     }
 
+    async function tryPlayMusic() {
+      try {
+        if (!audio.paused) {
+          audio.pause();
+        }
+        await musicPlayer.play();
+        musicStatus.textContent = 'Lecture de la musique en cours…';
+        status.textContent = '';
+      } catch {
+        musicStatus.textContent = 'Touchez le bouton pour lancer la musique.';
+      }
+    }
+
     window.addEventListener('load', tryPlay);
     playBtn.addEventListener('click', tryPlay);
+    musicBtn.addEventListener('click', tryPlayMusic);
   </script>
 </body>
 </html>
-
