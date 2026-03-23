@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Écouter l'audio</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, #f9fbff 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 1.9rem;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    audio {
+      width: 100%;
+      margin: 18px 0 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .small {
+      margin-top: 14px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .status {
+      min-height: 1.2em;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>🎵 Mon audio</h1>
+    <p>
+      Scanne le QR code pour arriver ici. La page essaie de lancer la lecture automatiquement,
+      mais certains téléphones bloquent l'autoplay. Dans ce cas, touche simplement le bouton.
+    </p>
+
+    <audio id="player" controls preload="auto">
+      <source src="audio.mp3" type="audio/mpeg" />
+      Votre navigateur ne supporte pas l'audio HTML5.
+    </audio>
+
+    <div>
+      <button class="btn" id="playBtn">▶ Lancer l'audio</button>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <p class="small">
+      Pour utiliser cette page, mets ton fichier MP3 dans le même dossier et renomme-le <strong>audio.mp3</strong>.
+    </p>
+  </main>
+
+  <script>
+    const audio = document.getElementById('player');
+    const playBtn = document.getElementById('playBtn');
+    const status = document.getElementById('status');
+
+    async function tryPlay() {
+      try {
+        await audio.play();
+        status.textContent = 'Lecture lancée.';
+      } catch (err) {
+        status.textContent = 'Lecture automatique bloquée : appuie sur le bouton.';
+      }
+    }
+
+    window.addEventListener('load', tryPlay);
+    playBtn.addEventListener('click', tryPlay);
+  </script>
+</body>
+</html>
